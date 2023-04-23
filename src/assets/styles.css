@@ -6,7 +6,84 @@ body {
 }
 
 .AppContainer {
+  font-family: monospace;
+}
+
+.ai-section {
+  display: block;
+  padding: 50px 24px 50px 24px;
+  height: 40vh;
+  border-bottom: 5px solid #121212;
+  /* border: 5px solid red;
+  outline: 5px solid red; */
+}
+
+.ai-section-text {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-family: monospace;
+  text-align: center;
+  width: 100%;
+  min-height: 100%;
+  max-width: 700px;
+  padding: 24px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  border: 3px solid #121212;
+  border-radius: 6px;
+}
+
+.small-font {
+  font-size: 20px;
+}
+
+.ai-section-text-inner {
+  /* border: 2px solid red; */
+  height: max-content;
+  max-width: 80%;
+}
+
+.user-section {
+  display: block;
+  padding: 50px 24px 24px 24px;
+  text-align: center;
+}
+
+.user-section-text {
+  font-size: 34px;
+  text-align: center;
+}
+
+.user-section-input {
+  display: inline-block;
+  width: 330px;
+  padding: 16px;
+  font-size: 22px;
+  /* height: 50px; */
+}
+
+.user-section-buttons-holder {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 16px;
+}
+
+.user-section-speak-button {
+  width: 130px;
+  height: 50px;
+  line-height: 46px;
+  margin: 25px 0 0 16px;
+  padding: 14px 20p;
+  border: 2px solid #121212;
+  border-radius: 6px;
+  text-align: center;
+  cursor: default;
+  transition: color .2s ease-in-out, background-color .2s ease-in-out;
+}
+
+.user-section-speak-button:hover {
+  color: white;
+  background-color: #121212;
 }
