@@ -23,10 +23,13 @@ const App = () => {
         ...conversationArray,
         ...[{
           speaker: 'AI',
-          text: aiData.conversation.aiResponse
+          text: aiData.conversation.aiResponse.data
         }]
       ]
       setConversationArray(newArr)
+      setFetchingAiResponse(false)
+      // const el = document.getElementsByClassName('user-section-input')[0]
+      // el.value = '';
     }
   }, [aiData])
 
@@ -43,9 +46,6 @@ const App = () => {
   const submitUserResponse = () => {
     const data = {text: document.getElementsByClassName('user-section-input')[0].value}
     data.conversationArray = conversationArray
-    console.log('data')
-    console.log(data)
-    console.log('data')
     submitUserResponseDispatch(data)
     const newArr = [
       ...conversationArray,
@@ -55,27 +55,104 @@ const App = () => {
       }]
     ]
     setConversationArray(newArr)
+    setFetchingAiResponse(true)
+  }
+
+  const [dictationMode, setDictationMode] = useState(false)
+  const [recognition, setRecognition] = useState({})
+  const [fetchingAiResponse, setFetchingAiResponse] = useState(false)
+  
+
+  const startDictation = () => {
+    const speech = window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+    if (!speech) {
+      return
+    }
+    let recognition = new speech()
+    recognition.continuous = true
+    recognition.lang = 'es-ES'
+    recognition.onresult = (evt) => {
+      const text = evt.results[evt.results.length - 1][0].transcript;
+      const el = document.getElementsByClassName('user-section-input')[0]
+      const currVal = el.value
+      const newVal = currVal + ' ' + text
+      el.value = newVal;
+    }
+    recognition.start()
+    setRecognition(recognition)
+    setDictationMode(true)
+  }
+
+  const stopDictation = () => {
+    console.log(recognition)
+    recognition.stop()
+    setDictationMode(false)
   }
 
   useEffect(() => {
     // getInitialAIResponse()
   }, [])
 
+  const toggleTranslation = () => {
+    const el = document.getElementsByClassName('ai-section-text')[0]
+    if (el.classList.contains('translation-mode')) {
+      el.classList.add('fade-out')
+      setTimeout(() => {
+        el.classList.remove('translation-mode')
+        el.classList.remove('fade-out')
+      }, 300)
+    } else {
+      el.classList.add('fade-out')
+      setTimeout(() => {
+        el.classList.add('translation-mode')
+        el.classList.remove('fade-out')
+      }, 300)
+    }
+  }
+
+  const [showCorrections, setShowCorrections] = useState(false)
+
   return (
     <div className="AppContainer">
       <div
         className="ai-section"
       >
-        <div className={`ai-section-text ${aiData.conversation?.aiResponse && aiData.conversation?.aiResponse.split(' ').length > 50 ? 'small-font' : ''}`}>
+        <div
+          className={`ai-section-text ${aiData.conversation?.aiResponse?.data && aiData.conversation?.aiResponse.data.split(' ').length > 50 ? 'small-font' : ''}`}
+          onClick={toggleTranslation}
+        >
+          <div className="ai-section-text-click-cover">
+            Click to see translation
+          </div>
+          {
+            fetchingAiResponse && (
+              <div className="text-loader">
+                <div className="loading-ball loading-ball-1"></div>
+                <div className="loading-ball loading-ball-2"></div>
+                <div className="loading-ball loading-ball-3"></div>
+              </div>
+            )
+          }
           <div
             className="ai-section-text-inner"
           >
-            {
-              aiData.conversation?.aiResponse ?
-                aiData.conversation?.aiResponse
-                :
-                'Welcome'
-            }
+            <div className="ai-section-text-inner-convo">
+              {
+                aiData.conversation?.aiResponse.data ?
+                  aiData.conversation?.aiResponse.data
+                  :
+                  'Bienvenidos! Digame algo para empezar.'
+              }
+            </div>
+            <div className="ai-section-text-inner-translation">
+              {
+                aiData.conversation?.aiResponse.translation ?
+                  aiData.conversation?.aiResponse.translation
+                  :
+                  'Hello! Say anything to begin.'
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -86,6 +163,13 @@ const App = () => {
           className="user-section-input"
           rows="7"
           cols="50"
+          onKeyUp={(evt) => {
+            console.log(evt)
+            console.log(evt.keyCode)
+            if (evt.keyCode === 13) {
+              submitUserResponse()
+            }
+          }}
         />
         <div
           className="user-section-buttons-holder"
@@ -98,13 +182,50 @@ const App = () => {
           >
             Speak
           </div>
-          <div
-            className="user-section-speak-button"
+          {/* <div
+            className={`user-section-speak-button user-section-dictation-button ${dictationMode ? 'dictation-mode' : ''}`}
             onClick={(evt) => {
-              submitUserResponse()
+              if (!dictationMode) {
+                startDictation()
+              } else {
+                stopDictation()
+              }
             }}
           >
-            Dictate
+            Dictate {dictationMode}
+          </div> */}
+          <div className="user-section-corrections-section">
+            <div
+              className="user-section-corrections-toggle"
+              onClick={() => {
+                if (showCorrections) {
+                  setShowCorrections(false)
+                } else {
+                  setShowCorrections(true)
+                }
+              }}
+            >
+              {
+                showCorrections ?
+                'hide corrections'
+                :
+                'show corrections'
+              }
+            </div>
+            <div>
+              {
+                showCorrections && (
+                  <>
+                    {
+                      aiData.conversation?.aiResponse?.correction ?
+                        aiData.conversation?.aiResponse.correction
+                        :
+                        'No correction available yet.'
+                    }
+                  </>
+                )
+              }
+            </div>
           </div>
         </div>
       </div>

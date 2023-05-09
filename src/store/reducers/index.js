@@ -19,8 +19,8 @@ const reducer = (state = defaultState, action) => {
     }
 
     case Types.POST_AI_RESPONSE: {
-
-      return { ...state, ...{ conversation: { aiResponse: action.payload.data.data.text }} };
+      console.log(action.payload)
+      return { ...state, ...{ conversation: { aiResponse: action.payload.data }} };
     }
 
 
