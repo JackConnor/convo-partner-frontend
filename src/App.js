@@ -116,6 +116,11 @@ const App = () => {
   return (
     <div className="AppContainer">
       <div
+        className="key mt-5 mb-2 col-md-8 offset-md-2 text-center"
+      >
+      <input type="text" class="form-control-lg tet-center" id="licenseKey" placeholder="Enter license key" />
+      </div>
+      <div
         className="ai-section"
       >
         <div
