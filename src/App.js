@@ -18,12 +18,15 @@ const App = () => {
   const [conversationArray, setConversationArray] = useState([])
 
   useEffect(() => {
+    console.log(aiData)
+    console.log('aiData')
+    console.log('aiData')
     if (aiData.conversation?.aiResponse) {
       const newArr = [
         ...conversationArray,
         ...[{
           speaker: 'AI',
-          text: aiData.conversation.aiResponse.data
+          text: aiData.conversation.aiResponse[0].text
         }]
       ]
       setConversationArray(newArr)
@@ -139,8 +142,8 @@ const App = () => {
           >
             <div className="ai-section-text-inner-convo">
               {
-                aiData.conversation?.aiResponse.data ?
-                  aiData.conversation?.aiResponse.data
+                aiData.conversation?.aiResponse[0].text ?
+                  aiData.conversation?.aiResponse[0].text
                   :
                   'Bienvenidos! Digame algo para empezar.'
               }
