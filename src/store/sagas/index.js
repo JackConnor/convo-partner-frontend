@@ -53,7 +53,7 @@ function* postUserResponseSaga(data) {
   //     'Access-Control-Allow-Origin': '*'
   //   }
   // })
-  const response = yield axios.post(`https://datablast.com/api/chatgpt?text=${data.payload.text}&name=&difficulty=beginner&key=07E79976-CDF74C33-BFE3B6A0-5E532739`, {
+  const response = yield axios.post(`https://datablast.com/api/chatgpt?text=${data.payload.text}&name=&difficulty=beginner&key=`, {
     prompt: data.payload.text,
     originalText: data.payload.text
   }, {
