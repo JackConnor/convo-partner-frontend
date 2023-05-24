@@ -1,28 +1,23 @@
 import { Types } from "../actions/items";
 
 const defaultState = {
-  items: [],
+  appLogin: false
 };
 
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case Types.CREATE_ITEM: {
-      const { items } = state;
-
-      items.push(action.payload);
-
-      return { ...state, items };
-    }
-
-    case Types.DELETE_ITEM: {
-      return state;
-    }
 
     case Types.POST_AI_RESPONSE: {
-      console.log(action.payload)
-      console.log('action.payload')
-      console.log('action.payload')
-      return { ...state, ...{ conversation: { aiResponse: action.payload.data }} };
+      return { ...state, ...{ conversation: { aiResponse: action.payload[0] }} };
+    }
+
+    case Types.POST_SUBMIT_LICENSE_SUCCESS: {
+      return { ...state, ...{ appLogin: true } };
+
+    }
+
+    case Types.POST_SUBMIT_LICENSE_FAILURE: {
+      return { ...state, ...{ appLogin: false } };
     }
 
 

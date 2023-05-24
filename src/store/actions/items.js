@@ -5,6 +5,9 @@ export const Types = {
   GET_AI_RESPONSE: "GET_AI_RESPONSE",
   POST_AI_RESPONSE: "POST_AI_RESPONSE",
   POST_USER_RESPONSE: "POST_USER_RESPONSE",
+  POST_SUBMIT_LICENSE: 'POST_SUBMIT_LICENSE',
+  POST_SUBMIT_LICENSE_SUCCESS: 'POST_SUBMIT_LICENSE_SUCCESS',
+  POST_SUBMIT_LICENSE_FAILURE: 'POST_SUBMIT_LICENSE_FAILURE',
 };
 
 // actions
@@ -42,3 +45,23 @@ export const postUserResponse = (data) => {
     payload: data,
   })
 };
+
+export const postSubmitLicense = (data) => {
+  return ({
+    type: Types.POST_SUBMIT_LICENSE,
+    payload: data,
+  })
+};
+
+export const postSubmitLicenseSuccess = () => {
+  return ({
+    type: Types.POST_SUBMIT_LICENSE_SUCCESS
+  })
+};
+
+export const postSubmitLicenseFailure = () => {
+  return ({
+    type: Types.POST_SUBMIT_LICENSE_FAILURE
+  })
+};
+

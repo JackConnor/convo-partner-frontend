@@ -8,43 +8,54 @@ import * as actions from './store/actions/items'
 const App = () => {
 
   const [
-    aiData,
+    appData,
   ] = useSelector((state) => [
-    state
+    state,
   ])
+
+
+
 
   // let conversationArray = [];
 
   const [conversationArray, setConversationArray] = useState([])
 
   useEffect(() => {
-    console.log(aiData)
-    console.log('aiData')
-    console.log('aiData')
-    if (aiData.conversation?.aiResponse) {
+    if (appData.conversation?.aiResponse) {
       const newArr = [
         ...conversationArray,
         ...[{
           speaker: 'AI',
-          text: aiData.conversation.aiResponse[0].text
+          text: appData.conversation.aiResponse.text
         }]
       ]
       setConversationArray(newArr)
       setFetchingAiResponse(false)
-      // const el = document.getElementsByClassName('user-section-input')[0]
-      // el.value = '';
     }
-  }, [aiData])
+  }, [appData])
+  
 
   useEffect(() => {
-    console.log('latest convo in full:')
-    console.log(conversationArray)
-  }, [conversationArray])
+    if (appData.appLogin) {
+      window.localStorage.setItem('lastLoginData', new Date().getTime())
+    }
+  }, [JSON.stringify(appData)])
+
+
+  const [showApp, setShowApp] = useState(false)
+
+  useEffect(() => {
+    let loginDate = window.localStorage.getItem('lastLoginData')
+    if (loginDate && (new Date().getTime() - loginDate < 3600000)) {
+      setShowApp(true)
+    }
+  }, [])
 
   const dispatch = useDispatch()
 
   const submitUserResponseDispatch = (data) => dispatch(actions.postUserResponse(data))
   const getInitialAIResponse = () => dispatch(actions.getAIResponse())
+  const postSubmitLicenseCall = (data) => dispatch(actions.postSubmitLicense(data))
 
   const submitUserResponse = () => {
     const data = {text: document.getElementsByClassName('user-section-input')[0].value}
@@ -88,7 +99,6 @@ const App = () => {
   }
 
   const stopDictation = () => {
-    console.log(recognition)
     recognition.stop()
     setDictationMode(false)
   }
@@ -118,120 +128,152 @@ const App = () => {
 
   return (
     <div className="AppContainer">
-      <div
-        className="ai-section"
-      >
-        <div
-          className={`ai-section-text ${aiData.conversation?.aiResponse?.data && aiData.conversation?.aiResponse.data.split(' ').length > 50 ? 'small-font' : ''}`}
-          onClick={toggleTranslation}
-        >
-          <div className="ai-section-text-click-cover">
-            Click to see translation
-          </div>
-          {
-            fetchingAiResponse && (
-              <div className="text-loader">
-                <div className="loading-ball loading-ball-1"></div>
-                <div className="loading-ball loading-ball-2"></div>
-                <div className="loading-ball loading-ball-3"></div>
+      <img className={`header-image ${(appData.appLogin || showApp) ? 'header-image-active' : ''}`} src="src/assets/miguel-banner-logo.png" width="80%" alt="Miguel Logo" />
+      {
+        !appData.appLogin && !showApp && (
+          <>
+            <div className="col-md-8 offset-md-2">
+              <div id="intro" className="mt-5 mb-3">
+                <h5>Hi 👋 I'm Miguel, your personal language learning companion designed to revolutionize the way you learn Spanish 🇪🇸. Simply purchase a <a href="https://kodekamp.gumroad.com/l/miguel">License Key</a>, enter it below, and start talking to me!</h5>
               </div>
-            )
-          }
-          <div
-            className="ai-section-text-inner"
-          >
-            <div className="ai-section-text-inner-convo">
-              {
-                aiData.conversation?.aiResponse[0].text ?
-                  aiData.conversation?.aiResponse[0].text
-                  :
-                  'Bienvenidos! Digame algo para empezar.'
-              }
             </div>
-            <div className="ai-section-text-inner-translation">
-              {
-                aiData.conversation?.aiResponse.translation ?
-                  aiData.conversation?.aiResponse.translation
-                  :
-                  'Hello! Say anything to begin.'
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="user-section"
-      >
-        <textarea
-          className="user-section-input"
-          rows="7"
-          cols="50"
-          onKeyUp={(evt) => {
-            console.log(evt)
-            console.log(evt.keyCode)
-            if (evt.keyCode === 13) {
-              submitUserResponse()
-            }
-          }}
-        />
-        <div
-          className="user-section-buttons-holder"
-        >
-          <div
-            className="user-section-speak-button"
-            onClick={(evt) => {
-              submitUserResponse()
-            }}
-          >
-            Speak
-          </div>
-          {/* <div
-            className={`user-section-speak-button user-section-dictation-button ${dictationMode ? 'dictation-mode' : ''}`}
-            onClick={(evt) => {
-              if (!dictationMode) {
-                startDictation()
-              } else {
-                stopDictation()
-              }
-            }}
-          >
-            Dictate {dictationMode}
-          </div> */}
-          <div className="user-section-corrections-section">
-            <div
-              className="user-section-corrections-toggle"
-              onClick={() => {
-                if (showCorrections) {
-                  setShowCorrections(false)
-                } else {
-                  setShowCorrections(true)
+            <input
+              type="text"
+              className="form-control-lg tet-center license-input"
+              id="licenseKey"
+              placeholder="Enter license key"
+              onKeyUp={(evt) => {
+                if (evt.keyCode === 13) {
+                  const val = evt.currentTarget.value;
+                  postSubmitLicenseCall(val)
+                  if (val === 'Sebastian') {
+                    // setShowApp(true)
+
+                  }
                 }
               }}
+            />
+          </>
+        )
+      }
+      {
+        appData.appLogin || showApp && (
+          <>
+            <div
+              className="ai-section"
             >
-              {
-                showCorrections ?
-                'hide corrections'
-                :
-                'show corrections'
-              }
-            </div>
-            <div>
-              {
-                showCorrections && (
-                  <>
+              <div
+                className={`ai-section-text ${appData.conversation?.aiResponse?.text && appData.conversation?.aiResponse.text.split(' ').length > 50 ? 'small-font' : ''}`}
+                onClick={toggleTranslation}
+              >
+                <div className="ai-section-text-click-cover">
+                  Click to see translation
+                </div>
+                {
+                  fetchingAiResponse && (
+                    <div className="text-loader">
+                      <div className="loading-ball loading-ball-1"></div>
+                      <div className="loading-ball loading-ball-2"></div>
+                      <div className="loading-ball loading-ball-3"></div>
+                    </div>
+                  )
+                }
+                <div
+                  className="ai-section-text-inner"
+                >
+                  <div className="ai-section-text-inner-convo">
                     {
-                      aiData.conversation?.aiResponse?.correction ?
-                        aiData.conversation?.aiResponse.correction
+                      appData.conversation?.aiResponse.text ?
+                        appData.conversation?.aiResponse.text
                         :
-                        'No correction available yet.'
+                        'Bienvenidos! Digame algo para empezar.'
                     }
-                  </>
-                )
-              }
+                  </div>
+                  <div className="ai-section-text-inner-translation">
+                    {
+                      appData.conversation?.aiResponse.translation ?
+                        appData.conversation?.aiResponse.translation
+                        :
+                        'Hello! Say anything to begin.'
+                    }
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+            <div
+              className="user-section"
+            >
+              <textarea
+                className="user-section-input"
+                rows="7"
+                cols="50"
+                onKeyUp={(evt) => {
+                  if (evt.keyCode === 13) {
+                    submitUserResponse()
+                  }
+                }}
+              />
+              <div
+                className="user-section-buttons-holder"
+              >
+                <div
+                  className="user-section-speak-button"
+                  onClick={(evt) => {
+                    submitUserResponse()
+                  }}
+                >
+                  Speak
+                </div>
+                {/* <div
+                  className={`user-section-speak-button user-section-dictation-button ${dictationMode ? 'dictation-mode' : ''}`}
+                  onClick={(evt) => {
+                    if (!dictationMode) {
+                      startDictation()
+                    } else {
+                      stopDictation()
+                    }
+                  }}
+                >
+                  Dictate {dictationMode}
+                </div> */}
+                <div className="user-section-corrections-section">
+                  <div
+                    className="user-section-corrections-toggle"
+                    onClick={() => {
+                      if (showCorrections) {
+                        setShowCorrections(false)
+                      } else {
+                        setShowCorrections(true)
+                      }
+                    }}
+                  >
+                    {
+                      showCorrections ?
+                        'hide corrections'
+                        :
+                        'show corrections'
+                    }
+                  </div>
+                  <div>
+                    {
+                      showCorrections && (
+                        <>
+                          {
+                            appData.conversation?.aiResponse?.hints ?
+                              appData.conversation?.aiResponse.hints
+                              :
+                              'No correction available yet.'
+                          }
+                        </>
+                      )
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )
+      }
     </div>
   );
 };
