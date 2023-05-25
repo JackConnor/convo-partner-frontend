@@ -13,6 +13,8 @@ const App = () => {
     state,
   ])
 
+  console.log(appData)
+
 
 
 
@@ -37,7 +39,8 @@ const App = () => {
 
   useEffect(() => {
     if (appData.appLogin) {
-      window.localStorage.setItem('lastLoginData', new Date().getTime())
+      // window.localStorage.setItem('lastLoginData', new Date().getTime())
+      // window.localStorage.setItem('lastLoginKey', loginKey)
     }
   }, [JSON.stringify(appData)])
 
@@ -45,10 +48,12 @@ const App = () => {
   const [showApp, setShowApp] = useState(false)
 
   useEffect(() => {
-    let loginDate = window.localStorage.getItem('lastLoginData')
-    if (loginDate && (new Date().getTime() - loginDate < 3600000)) {
-      setShowApp(true)
-    }
+    // let loginDate = window.localStorage.getItem('lastLoginData')
+    // let loginKey = window.localStorage.getItem('lastLoginKey')
+    // if (loginDate && (new Date().getTime() - loginDate < 3600000) && loginKey) {
+    //   setShowApp(true)
+    //   setLoginKey(loginKey)
+    // }
   }, [])
 
   const dispatch = useDispatch()
@@ -58,8 +63,9 @@ const App = () => {
   const postSubmitLicenseCall = (data) => dispatch(actions.postSubmitLicense(data))
 
   const submitUserResponse = () => {
-    const data = {text: document.getElementsByClassName('user-section-input')[0].value}
+    const data = {text: document.getElementsByClassName('user-section-input')[0].value, key: loginKey}
     data.conversationArray = conversationArray
+    console.log(data)
     submitUserResponseDispatch(data)
     const newArr = [
       ...conversationArray,
@@ -75,6 +81,7 @@ const App = () => {
   const [dictationMode, setDictationMode] = useState(false)
   const [recognition, setRecognition] = useState({})
   const [fetchingAiResponse, setFetchingAiResponse] = useState(false)
+  const [loginKey, setLoginKey] = useState('')
   
 
   const startDictation = () => {
@@ -145,6 +152,7 @@ const App = () => {
               onKeyUp={(evt) => {
                 if (evt.keyCode === 13) {
                   const val = evt.currentTarget.value;
+                  setLoginKey(val)
                   postSubmitLicenseCall(val)
                   if (val === 'Sebastian') {
                     // setShowApp(true)
@@ -157,7 +165,7 @@ const App = () => {
         )
       }
       {
-        appData.appLogin || showApp && (
+        appData.appLogin && (
           <>
             <div
               className="ai-section"

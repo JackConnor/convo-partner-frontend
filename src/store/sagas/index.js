@@ -17,6 +17,7 @@ function* getAiResponseSaga() {
 
 function* postSubmitLicense(action) {
   try {
+    console.log(action.payload)
     const response = yield axios.get(`https://datablast.com/api/chatgpt?text=hola&name=&difficulty=beginner&format=json&key=${action.payload}`, {
       headers: {
         // 'Access-Control-Allow-Origin': '*'
@@ -33,7 +34,8 @@ function* postSubmitLicense(action) {
 }
 
 function* postUserResponseSaga(data) {
-  const response = yield axios.get(`https://datablast.com/api/chatgpt?text=${data.payload.text}&name=&difficulty=beginner&format=json&key=`, {
+  console.log(data.payload)
+  const response = yield axios.get(`https://datablast.com/api/chatgpt?text=${data.payload.text}&name=&difficulty=beginner&format=json&key=${data.payload.key}`, {
     prompt: data.payload.text,
     originalText: data.payload.text
   }, {
