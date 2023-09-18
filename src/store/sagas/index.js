@@ -34,16 +34,18 @@ function* postSubmitLicense(action) {
 }
 
 function* postUserResponseSaga(data) {
+  console.log(data)
   console.log(data.payload)
-  const response = yield axios.get(`https://datablast.com/api/chatgpt?text=${data.payload.text}&name=&difficulty=beginner&format=json&key=${data.payload.key}`, {
-    prompt: data.payload.text,
-    originalText: data.payload.text
+  const response = yield axios.post(`http://localhost:3000/prompt-dict`, {
+    word: data.payload.word,
+    context: data.payload.context
   }, {
     headers: {
       // 'Access-Control-Allow-Origin': '*'
     }
   })
-  yield put(actions.postAIResponse(response.data))  
+  console.log(response)
+  yield put(actions.postAIResponse(response.data.res))  
 
 }
 

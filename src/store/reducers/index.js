@@ -8,7 +8,7 @@ const reducer = (state = defaultState, action) => {
   switch (action.type) {
 
     case Types.POST_AI_RESPONSE: {
-      return { ...state, ...{ conversation: { aiResponse: action.payload[0] }} };
+      return { ...state, ...{ definition: { aiResponse: action.payload }} };
     }
 
     case Types.POST_SUBMIT_LICENSE_SUCCESS: {
