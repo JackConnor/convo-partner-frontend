@@ -17,7 +17,6 @@ const App = () => {
 
   console.log(appData.definition?.aiExplanation)
 
-
   // let conversationArray = [];
 
   const [conversationArray, setConversationArray] = useState([])
