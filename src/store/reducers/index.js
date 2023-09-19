@@ -11,6 +11,14 @@ const reducer = (state = defaultState, action) => {
       return { ...state, ...{ definition: { aiResponse: action.payload }} };
     }
 
+    case Types.POST_AI_EXPLAINER_QUESTION_RESPONSE: {
+      return { ...state, ...{ definition: { aiExplanation: action.payload }} };
+    }
+
+    case Types.POST_AI_EXPLAINER_RESPONSE_RESPONSE: {
+      return { ...state, ...{ definition: { aiResponse: action.payload }} };
+    }
+
     case Types.POST_SUBMIT_LICENSE_SUCCESS: {
       return { ...state, ...{ appLogin: true } };
 

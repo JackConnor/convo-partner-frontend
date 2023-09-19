@@ -15,6 +15,37 @@ function* getAiResponseSaga() {
   yield put(actions.postAIResponse(response))
 }
 
+function* postAiExplainerQuestionSaga(action) {
+  console.log(action.payload)
+  console.log('HERE')
+  console.log('HERE')
+  console.log('HERE')
+  console.log('HERE')
+  console.log('HERE')
+  const response = yield axios.post('http://localhost:3000/prompt-dict-explanation', {
+    context: action.payload.context,
+    language: action.payload.language
+    // prompt: 'Quote Borges, maximum 50 lines'
+  }, {
+    headers: {
+      // 'Access-Control-Allow-Origin': '*'
+    }
+  })
+  yield put(actions.postAIExplainerQuestionResponse(response.data.res))
+}
+
+function* postAiExplainerResponseSaga() {
+  const response = yield axios.post('http://localhost:3000/prompt', {
+    prompt: 'Start a conversation with me in a language of your choosing like i was a nine year old'
+    // prompt: 'Quote Borges, maximum 50 lines'
+  }, {
+    headers: {
+      // 'Access-Control-Allow-Origin': '*'
+    }
+  })
+  yield put(actions.postAIExplainerResponseResponse(response))
+}
+
 function* postSubmitLicense(action) {
   try {
     console.log(action.payload)
@@ -52,6 +83,8 @@ function* postUserResponseSaga(data) {
 export default function* rootSaga() {
   yield all([
     takeLatest("GET_AI_RESPONSE", getAiResponseSaga),
+    takeLatest("POST_AI_EXPLAINER_QUESTION", postAiExplainerQuestionSaga),
+    takeLatest("POST_AI_EXPLAINER_RESPONSE", postAiExplainerResponseSaga),
     takeLatest("POST_USER_RESPONSE", postUserResponseSaga),
     takeLatest("POST_SUBMIT_LICENSE", postSubmitLicense),
   ]);

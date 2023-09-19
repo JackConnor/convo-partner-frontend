@@ -5,6 +5,10 @@ body {
   height: 100%;
 }
 
+.wrapper {
+  padding: 20px;
+}
+
 .AppContainer {
   font-family: monospace;
 }
@@ -16,8 +20,8 @@ body {
 }
 
 #context-input {
-  width: 300px;
-  height: 145px;
+  width: 500px;
+  height: 235px;
   margin-top: 10px;
 }
 
@@ -25,6 +29,7 @@ body {
 .submit-button {
   display: inline-block;
   padding: 25px;
+  margin-top: 10px;
   background-color: red;
   transition: opacity .2s ease-in-out;
 }
@@ -43,4 +48,14 @@ body {
 
 .etymology-holder {
   margin-top: 24px;
+}
+
+.app-container {
+  padding: 40px 24px;
+}
+
+.language-select {
+  vertical-align: top;
+  width: 200px;
+  margin: 10px 0 0 15px;
 }
