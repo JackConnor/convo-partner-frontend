@@ -53,6 +53,7 @@ body {
 
 .etymology-holder {
   margin-top: 24px;
+  white-space: pre-line;
 }
 
 .app-container {

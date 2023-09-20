@@ -233,6 +233,7 @@ const App = () => {
               <>
                 <div className="description-holder">{explanationArray.paragraph1}</div>
                 <div className="etymology-holder"> {explanationArray.paragraph2} </div>
+                {/* <pre className="etymology-holder"> lkasjdflksdjf /n/ alsdjflsajdflkas </pre> */}
               </>
             }
           </>
