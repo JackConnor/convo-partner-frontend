@@ -4,8 +4,7 @@ import * as actions from '../actions/items'
 import axios from 'axios'
 
 function* getAiResponseSaga() {
-  // const response = yield axios.post('http://localhost:3000/prompt', {
-  const response = yield axios.post('https://explainer-dictionary-node-e1fc69f26330.herokuapp.com/prompt', {
+  const response = yield axios.post('http://localhost:3000/prompt', {
     prompt: 'Start a conversation with me in a language of your choosing like i was a nine year old'
     // prompt: 'Quote Borges, maximum 50 lines'
   }, {
@@ -23,7 +22,7 @@ function* postAiExplainerQuestionSaga(action) {
   console.log('HERE')
   console.log('HERE')
   console.log('HERE')
-  const response = yield axios.post('https://explainer-dictionary-node-e1fc69f26330.herokuapp.com/prompt-dict-explanation', {
+  const response = yield axios.post('http://localhost:3000/prompt-dict-explanation', {
     context: action.payload.context,
     language: action.payload.language
     // prompt: 'Quote Borges, maximum 50 lines'
@@ -36,7 +35,7 @@ function* postAiExplainerQuestionSaga(action) {
 }
 
 function* postAiExplainerResponseSaga() {
-  const response = yield axios.post('https://explainer-dictionary-node-e1fc69f26330.herokuapp.com/prompt', {
+  const response = yield axios.post('http://localhost:3000/prompt', {
     prompt: 'Start a conversation with me in a language of your choosing like i was a nine year old'
     // prompt: 'Quote Borges, maximum 50 lines'
   }, {
@@ -68,7 +67,7 @@ function* postSubmitLicense(action) {
 function* postUserResponseSaga(data) {
   console.log(data)
   console.log(data.payload)
-  const response = yield axios.post(`https://explainer-dictionary-node-e1fc69f26330.herokuapp.com/prompt-dict`, {
+  const response = yield axios.post(`http://localhost:3000/prompt-dict`, {
     word: data.payload.word,
     context: data.payload.context
   }, {
