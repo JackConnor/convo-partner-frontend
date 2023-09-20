@@ -1,49 +1,31 @@
+const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const path = require("path");
-const { SourceMapDevToolPlugin } = require("webpack");
 
 module.exports = {
-  context: __dirname,
+  mode: "development",
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "main.js",
-    publicPath: "/",
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'build'),
   },
-  devServer: {
-    historyApiFallback: true,
-    inline: true,
-    port: 3001,
-  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: path.resolve(__dirname, 'public/index.html'),
+      filename: 'index.html'
+    })
+  ],
   module: {
     rules: [
       {
         test: /\.js$/,
-        enforce: "pre",
-        use: ["source-map-loader"],
-      },
-      {
-        test: /\.js$/,
         exclude: /node_modules/,
-        use: "babel-loader",
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        }
       },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.(png|j?g|svg|gif)?$/,
-        use: "file-loader",
-      },
-    ],
+    ]
   },
-  plugins: [
-    new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, "public/index.html"),
-      filename: "index.html",
-    }),
-    new SourceMapDevToolPlugin({
-      filename: "[file].map",
-    }),
-  ],
-};
+}

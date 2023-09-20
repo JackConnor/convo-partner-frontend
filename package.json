@@ -4,12 +4,9 @@
   "description": "react-redux-saga-biolerplate",
   "main": "index.js",
   "scripts": {
-    "webpack-dev-server": "webpack-dev-server",
-    "heroku-prebuild": "npm install --dev",
-    "dev": "HOST=0.0.0.0 webpack-dev-server --mode=development",
-    "prod": "webpack --mode=production",
-    "build": "react-scripts build",
+    "dev": "webpack-dev-server",
     "start": "node server.js",
+    "build": "webpack --config ./webpack.config.js --mode='production'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -48,14 +45,14 @@
     "source-map-loader": "^1.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.4",
+    "@babel/core": "^7.22.20",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-react": "^7.10.4",
-    "babel-loader": "^8.1.0",
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-react": "^7.22.15",
+    "babel-loader": "^8.3.0",
     "css-loader": "^4.2.2",
-    "html-webpack-plugin": "^4.3.0",
+    "html-webpack-plugin": "^4.5.2",
     "path": "^0.12.7",
     "style-loader": "^1.2.1",
     "webpack": "^4.47.0",
