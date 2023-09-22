@@ -22,6 +22,8 @@ const App = () => {
   const [conversationArray, setConversationArray] = useState([])
   const [definitionArray, setDefinitionArray] = useState([])
   const [explanationArray, setExplanationArray] = useState([])
+  const [initialBlurb, setInitialBlurb] = useState('')
+  const [moreInfoBool, setMoreInfoBool] = useState(false)
 
   useEffect(() => {
     if (appData.definition?.aiResponse) {
@@ -39,6 +41,12 @@ const App = () => {
       setFetchingAiResponse(false)
     }
     if (appData.definition?.aiExplanation) {
+      if (!moreInfoBool) {
+        setInitialBlurb(appData.definition?.aiExplanation.paragraph1)
+      } else if (appData.definition?.aiExplanation.paragraph2) {
+        console.log('Deleting')
+        setInitialBlurb('')
+      }
       // const defJson = JSON.parse(appData.definition?.aiExplanation)
       setExplanationArray(appData.definition?.aiExplanation)
       setFetchingAiResponse(false)
@@ -56,8 +64,13 @@ const App = () => {
   const submitUserResponseDispatch = (data) => dispatch(actions.postUserResponse(data))
 
   const submitUserExplainerQuestionDispatch = (data) => dispatch(actions.postAIExplainerQuestion(data))
+  const submitUserExplainerMoreInfoDispatch = (data) => dispatch(actions.postAIExplainerMoreInfo(data))
 
-
+  const getMoreInformation = () => {
+    setMoreInfoBool(true)
+    const language = document.getElementById('language-select').value
+    submitUserExplainerMoreInfoDispatch({ context: initialBlurb, language })
+  }
 
   const [dictationMode, setDictationMode] = useState(false)
   const [recognition, setRecognition] = useState({})
@@ -91,17 +104,9 @@ const App = () => {
     setDictationMode(false)
   }
 
-  // const submitUserResponse = () => {
-  //   const word = document.getElementById('word-input').value
-  //   console.log(word)
-  //   const context = document.getElementById('context-input').value
-  //   console.log(context)
-  //   submitUserResponseDispatch({ word, context })
-
-  //   setFetchingAiResponse(true)
-  // }
-
   const submitUserExplainerQuestion = () => {
+    setInitialBlurb('')
+    setMoreInfoBool(false)
     const data = document.getElementById('context-input').value
     console.log(data)
     const language = document.getElementById('language-select').value
@@ -152,6 +157,8 @@ const App = () => {
   //     </div>
   //   )
   // }
+
+
   const SingleInputExplainer = () => {
     return (
       <div className="app-container">
@@ -183,7 +190,7 @@ const App = () => {
             <>
               {
                 <>
-                  <div className="description-holder">{explanationArray.paragraph1}</div>
+                  <div className="description-holder">{initialBlurb || explanationArray.paragraph1}</div>
                   <div className="etymology-holder"> {explanationArray.paragraph2} </div>
                 </>
               }
@@ -231,9 +238,41 @@ const App = () => {
           <>
             {
               <>
+                <div className="description-holder">{initialBlurb || explanationArray.paragraph1}</div>
+                <div className="description-holder">{explanationArray.paragraph2}</div>
+                {
+                  explanationArray.paragraph1 && !explanationArray.paragraph2 && (
+                    <>
+                      <div
+                        className="learn-more-button"
+                        onClick={getMoreInformation}
+                      >Learn More</div>
+                    </>
+                  )
+                }
+                {/* {
+                  !explanationArray.paragraph2 && (
+                    <>
+                      <div className="description-holder">{initialBlurb || explanationArray.paragraph1}</div>                    
+                    </>
+                  )
+                }
+                {
+                  explanationArray.paragraph2 && (
+                    <div className="description-holder">{explanationArray.paragraph1}</div>
+                  )
+                }
                 <div className="description-holder">{explanationArray.paragraph1}</div>
-                <div className="etymology-holder"> {explanationArray.paragraph2} </div>
-                {/* <pre className="etymology-holder"> lkasjdflksdjf /n/ alsdjflsajdflkas </pre> */}
+                {
+                  !explanationArray.paragraph2 && (
+                    <>
+                      <div
+                        className="learn-more-button"
+                        onClick={getMoreInformation}
+                      >Learn More</div>
+                    </>
+                  )
+                } */}
               </>
             }
           </>

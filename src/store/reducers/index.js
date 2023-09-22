@@ -11,8 +11,22 @@ const reducer = (state = defaultState, action) => {
       return { ...state, ...{ definition: { aiResponse: action.payload }} };
     }
 
+    case Types.POST_AI_EXPLAINER_MORE_INFO: {
+      console.log('Here')
+      // return { ...state, ...{ definition: { aiExplanation: {paragaph1: '', paragraph2: ''} }} };
+    }
+
+    case Types.POST_AI_EXPLAINER_MORE_INFO_RESPONSE: {
+      console.log('Here')
+      return { ...state, ...{ definition: { aiExplanation: action.payload }} };
+    }
+
     case Types.POST_AI_EXPLAINER_QUESTION_RESPONSE: {
       return { ...state, ...{ definition: { aiExplanation: action.payload }} };
+    }
+
+    case Types.POST_AI_EXPLAINER_MORE_INFO_RESPONSE: {
+      return { ...state, ...{ definition: { aiExplanationMoreInfo: action.payload }} };
     }
 
     case Types.POST_AI_EXPLAINER_RESPONSE_RESPONSE: {

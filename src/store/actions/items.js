@@ -5,6 +5,8 @@ export const Types = {
   GET_AI_RESPONSE: "GET_AI_RESPONSE",
   POST_AI_RESPONSE: "POST_AI_RESPONSE",
   POST_AI_EXPLAINER_QUESTION: "POST_AI_EXPLAINER_QUESTION",
+  POST_AI_EXPLAINER_MORE_INFO: "POST_AI_EXPLAINER_MORE_INFO",
+  POST_AI_EXPLAINER_MORE_INFO_RESPONSE: "POST_AI_EXPLAINER_MORE_INFO_RESPONSE",
   POST_AI_EXPLAINER_RESPONSE: "POST_AI_EXPLAINER_RESPONSE",
   POST_AI_EXPLAINER_QUESTION_RESPONSE: "POST_AI_EXPLAINER_QUESTION_RESPONSE",
   POST_AI_EXPLAINER_RESPONSE_RESPONSE: "POST_AI_EXPLAINER_RESPONSE_RESPONSE",
@@ -79,6 +81,20 @@ export const postAIExplainerResponse = (data) => {
 export const postAIExplainerQuestion = (data) => {
   return ({
     type: Types.POST_AI_EXPLAINER_QUESTION,
+    payload: data,
+  })
+};
+
+export const postAIExplainerMoreInfoResponse = (data) => {
+  return ({
+    type: Types.POST_AI_EXPLAINER_MORE_INFO_RESPONSE,
+    payload: data,
+  })
+};
+
+export const postAIExplainerMoreInfo = (data) => {
+  return ({
+    type: Types.POST_AI_EXPLAINER_MORE_INFO,
     payload: data,
   })
 };
