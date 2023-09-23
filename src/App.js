@@ -152,14 +152,13 @@ const App = () => {
                       :
                       (
                         <>
-                          <div>"{initialQuestion}":</div>
+                          <div className="initial-question">"{initialQuestion}":</div>
                           {
                             JSON.parse(explanationArray.paragraph1).map((data, ind) => {
                               return (
-                                <>
-
-                                  <div>{ind + 1}: {data.definition} {data.example && `"${data.example}"`}</div>
-                                </>
+                                <div className="phrase-definitions">
+                                  <div className="phrase-definition">{ind + 1}: {data.definition} {data.example && `"${data.example}"`}</div>
+                                </div>
                               )
                             })
                           }
