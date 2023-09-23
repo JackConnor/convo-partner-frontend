@@ -129,7 +129,7 @@ const App = () => {
           <option value="Polish">Polish</option>
           <option value="German">German</option>
           <option value="French">French</option>
-          <option value="Portuguese">Portugues</option>
+          <option value="Portuguese">Portuguese</option>
           <option value="Greek">Greek</option>
           <option value="Korean">Korean</option>
           <option value="Mandarin">Mandarin</option>
