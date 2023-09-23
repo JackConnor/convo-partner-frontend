@@ -4,15 +4,10 @@ import * as actions from '../actions/items'
 import axios from 'axios'
 
 function* getAiResponseSaga() {
-  const response = yield axios.post('http://localhost:3000/prompt', {
-  // const response = yield axios.post('https://explainer-dictionary-node-e1fc69f26330.herokuapp.com/prompt', {
+  // const response = yield axios.post('http://localhost:3000/prompt', {
+  const response = yield axios.post('https://explainer-dictionary-node-e1fc69f26330.herokuapp.com/prompt', {
     prompt: 'Start a conversation with me in a language of your choosing like i was a nine year old'
-    // prompt: 'Quote Borges, maximum 50 lines'
-  }, {
-    headers: {
-      // 'Access-Control-Allow-Origin': '*'
-    }
-  })
+  }, {})
   yield put(actions.postAIResponse(response))
 }
 
@@ -21,7 +16,6 @@ function* postAiExplainerQuestionSaga(action) {
   const response = yield axios.post('http://localhost:3000/prompt-dict-explanation', {
     context: action.payload.context,
     language: action.payload.language
-    // prompt: 'Quote Borges, maximum 50 lines'
   }, {
     headers: {
       // 'Access-Control-Allow-Origin': '*'
@@ -31,17 +25,10 @@ function* postAiExplainerQuestionSaga(action) {
 }
 
 function* postAiExplainerMoreInfoSaga(action) {
-  console.log('HERE')
-  console.log('HERE')
-  console.log('HERE')
-  console.log('HERE')
-  console.log('HERE')
-  console.log('HERELJ')
   // const response = yield axios.post('https://explainer-dictionary-node-e1fc69f26330.herokuapp.com/prompt-dict-explanation', {
   const response = yield axios.post('http://localhost:3000/prompt-dict-explanation-more-info', {
     context: action.payload.context,
     language: action.payload.language
-    // prompt: 'Quote Borges, maximum 50 lines'
   }, {
     headers: {
       // 'Access-Control-Allow-Origin': '*'

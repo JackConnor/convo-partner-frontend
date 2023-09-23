@@ -18,7 +18,7 @@ const reducer = (state = defaultState, action) => {
 
     case Types.POST_AI_EXPLAINER_MORE_INFO_RESPONSE: {
       console.log('Here')
-      return { ...state, ...{ definition: { aiExplanation: action.payload }} };
+      return { ...state, ...{ definition: { aiExplanationMoreInfo: action.payload }} };
     }
 
     case Types.POST_AI_EXPLAINER_QUESTION_RESPONSE: {
